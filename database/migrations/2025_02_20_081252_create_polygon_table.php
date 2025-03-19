@@ -7,12 +7,15 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Jalankan migrasi untuk membuat tabel polygons.
      */
     public function up(): void
     {
-        Schema::create('polygon', function (Blueprint $table) {
+        Schema::create('polygons', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->unique(); // Nama polygon (harus unik)
+            $table->text('description'); // Deskripsi polygon
+            $table->geometry('geom'); // Data geometrik polygon (PostGIS)
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('polygon');
+        Schema::dropIfExists('polygons');
     }
 };
