@@ -141,7 +141,7 @@
     <script src="https://unpkg.com/@terraformer/wkt"></script>
 
     <script>
-        var map = L.map('map').setView([1.4811444328133583, 124.84622679551077], 14);
+        var map = L.map('map').setView([1.4811444328133583, 124.84622679551077], 12);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -214,5 +214,75 @@ map.on('draw:created', function(e) {
 
 	drawnItems.addLayer(layer);
 });
+
+
+    //GeoJSON Points
+    /* GeoJSON Point */
+    var point = L.geoJson(null, {
+				onEachFeature: function (feature, layer) {
+					var popupContent = "Nama: " + feature.properties.name + "<br>" +
+						"Deskripsi: " + feature.properties.description + "<br>" +
+                        "Dibuat: " + feature.properties.created_at;
+					layer.on({
+						click: function (e) {
+							point.bindPopup(popupContent);
+						},
+						mouseover: function (e) {
+							point.bindTooltip(feature.properties.name);
+						},
+					});
+				},
+			});
+			$.getJSON("{{ route('api.points') }}", function (data) {
+				point.addData(data);
+				map.addLayer(point);
+			});
+
+
+    /* GeoJSON Polyline */
+    var polyline = L.geoJson(null, {
+				onEachFeature: function (feature, layer) {
+					var popupContent = "Nama: " + feature.properties.name + "<br>" +
+						"Deskripsi: " + feature.properties.description + "<br>" +
+                        "Panjang: " + feature.properties.length_km.toFixed(2) + " km<br>" +
+                        "Dibuat: " + feature.properties.created_at;
+					layer.on({
+						click: function (e) {
+							polyline.bindPopup(popupContent);
+						},
+						mouseover: function (e) {
+							polyline.bindTooltip(feature.properties.name);
+						},
+					});
+				},
+			});
+			$.getJSON("{{ route('api.polylines') }}", function (data) {
+				polyline.addData(data);
+				map.addLayer(polyline);
+			});
+
+
+/* GeoJSON Polygon */
+var polygon = L.geoJson(null, {
+				onEachFeature: function (feature, layer) {
+					var popupContent = "Nama: " + feature.properties.name + "<br>" +
+						"Deskripsi: " + feature.properties.description + "<br>" +
+                        "Luas: " + feature.properties.luas_hektar.toFixed(2) + " hektar" + "<br>" +
+                        "Dibuat: " + feature.properties.created_at;
+					layer.on({
+						click: function (e) {
+							polygon.bindPopup(popupContent);
+						},
+						mouseover: function (e) {
+							polygon.bindTooltip(feature.properties.name);
+						},
+					});
+				},
+			});
+			$.getJSON("{{ route('api.polygons') }}", function (data) {
+				polygon.addData(data);
+				map.addLayer(polygon);
+			});
+
     </script>
 @endsection
