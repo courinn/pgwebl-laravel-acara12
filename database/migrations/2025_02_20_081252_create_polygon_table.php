@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->unique(); // Nama polygon (harus unik)
             $table->text('description'); // Deskripsi polygon
             $table->geometry('geom'); // Data geometrik polygon (PostGIS)
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
