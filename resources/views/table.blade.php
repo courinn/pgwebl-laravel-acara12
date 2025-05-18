@@ -1,34 +1,33 @@
 @extends('layout/template')
 
 @section('content')
+<div class="container mt-4">
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>No</th>
-                <th>Nama</th>
-                <th>NIM</th>
-                <th>Kelas</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Created At</th>
+                <th>Updated At</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>Courinn</td>
-                <td>23/517429/SV/22772</td>
-                <td>B</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Arin</td>
-                <td>23/517428/SV/22773</td>
-                <td>B</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Garini Ulima</td>
-                <td>23/517427/SV/22774</td>
-                <td>B</td>
-            </tr>
+            {{-- loop points data --}}
+            @foreach ($points as $index => $p)
+                <tr>
+                    <td>{{ $p->id }}</td>
+                    <td>{{ $p->name }}</td>
+                    <td>{{ $p->description }}</td>
+                    <td>
+                        <img src="{{ asset('storage/images/' . $p->image) }}" alt="" width="150" title="{{ $p->image }}">
+                    </td>
+                    <td>{{ $p->created_at }}</td>
+                    <td>{{ $p->updated_at }}</td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
+</div>
 @endsection
