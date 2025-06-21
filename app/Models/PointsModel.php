@@ -55,18 +55,25 @@ class PointsModel extends Model
 
 
 
-    public function geojson_point($id)
-
+   public function geojson_point($id)
 {
     $points = $this
-    ->select(DB::raw('id, st_asgeojson(geom) as geom, name, description, image, created_at,
-    updated_at'))
-    ->where('id', $id)
-    ->get();
+        ->select(DB::raw('points.id,
+            ST_AsGeoJSON(points.geom) as geom,
+            points.name,
+            points.description,
+            points.image,
+            points.created_at,
+            points.updated_at,
+            points.user_id,
+            users.name as user_created'))
+        ->leftJoin('users', 'points.user_id', '=', 'users.id')
+        ->where('points.id', $id)
+        ->get();
 
     $geojson = [
         'type' => 'FeatureCollection',
-        'features' =>[],
+        'features' => [],
     ];
 
     foreach ($points as $p) {
@@ -80,12 +87,23 @@ class PointsModel extends Model
                 'created_at' => $p->created_at,
                 'updated_at' => $p->updated_at,
                 'image' => $p->image,
+                'user_created' => $p->user_created,
+                'user_id' => $p->user_id,
             ],
         ];
 
-        array_push($geojson['features'],$feature);
+        array_push($geojson['features'], $feature);
     }
-        return $geojson;
-    }
+
+    return $geojson;
+}
+
+public static function withUser()
+{
+    return DB::table('points')
+        ->select('points.*', 'users.name as user_created')
+        ->leftJoin('users', 'points.user_id', '=', 'users.id')
+        ->get();
+}
 
 }

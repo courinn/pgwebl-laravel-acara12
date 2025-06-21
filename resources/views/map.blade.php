@@ -247,10 +247,10 @@ map.on('draw:created', function(e) {
                 routeedit = routeedit.replace(':id', feature.properties.id);
 
 var popupContent = `
-    Nama: ${feature.properties.name} <br>
-    Deskripsi: ${feature.properties.description} <br>
-    Dibuat: ${feature.properties.created_at} <br>
-    Dibuat Oleh: ${feature.properties.user_created} <br>
+    <b>Nama:</b> ${feature.properties.name} <br>
+    <b>Deskripsi:</b> ${feature.properties.description} <br>
+    <b>Dibuat:</b> ${feature.properties.created_at} <br>
+    <b>Dibuat Oleh:</b> ${feature.properties.user_created} <br>
     <img src='{{ asset('storage/images/') }}/${feature.properties.image}' width='250' alt=''><br>
     <div class='row mt-4'>
         <div class='col-6 text-end'>
@@ -287,37 +287,40 @@ var popupContent = `
         });
 
 
-    /* GeoJSON Polyline */
-    var polyline = L.geoJson(null, {
-				onEachFeature: function (feature, layer) {
-                    var routedelete = "{{ route('polylines.destroy', ':id')}}";
-                    routedelete = routedelete.replace(':id', feature.properties.id);
+/* GeoJSON Polyline */
+var polyline = L.geoJson(null, {
+    onEachFeature: function(feature, layer) {
+        var routedelete = "{{ route('polylines.destroy', ':id')}}";
+        routedelete = routedelete.replace(':id', feature.properties.id);
 
-                    var routeedit = "{{ route('polylines.edit', ':id')}}";
-                    routeedit = routeedit.replace(':id', feature.properties.id);
+        var routeedit = "{{ route('polylines.edit', ':id')}}";
+        routeedit = routeedit.replace(':id', feature.properties.id);
 
-                var popupContent = `
-                    Nama: ${feature.properties.name} <br>
-                    Deskripsi: ${feature.properties.description} <br>
-                    Dibuat: ${feature.properties.created_at} <br>
-                    Dibuat Oleh: ${feature.properties.user_created} <br>
-                    <img src='{{ asset('storage/images/') }}/${feature.properties.image}' width='250' alt=''><br>
-                    <div class='row mt-4'>
-                    <div class='col-6 text-end'>
-                        <a href='${routeedit}' class='btn btn-warning btn-sm'>
-                            <i class='fa-solid fa-pen-to-square'></i>
-                        </a>
-                    </div>
-                    <div class='col-6'>
-                        <form method='POST' action='${routedelete}' onsubmit="return confirm('Yakin ingin menghapus fitur ini?')">
+        var popupContent = `
+            <b>Nama:</b> ${feature.properties.name} <br>
+            <b>Deskripsi:</b> ${feature.properties.description} <br>
+            <b>Dibuat:</b> ${feature.properties.created_at} <br>
+            <b>Dibuat Oleh:</b> ${feature.properties.user_created} <br>
+            <b>Panjang:</b> ${feature.properties.length_m.toFixed(2)} m (${feature.properties.length_km.toFixed(2)} km) <br>
+            <img src='{{ asset('storage/images/') }}/${feature.properties.image}' width='250' alt=''><br>
+            <div class='row mt-4'>
+                <div class='col-6 text-end'>
+                    <a href='${routeedit}' class='btn btn-warning btn-sm'>
+                        <i class='fa-solid fa-pen-to-square'></i>
+                    </a>
+                </div>
+                <div class='col-6'>
+                    <form method='POST' action='${routedelete}' onsubmit="return confirm('Yakin ingin menghapus fitur ini?')">
                         @csrf
                         @method("DELETE")
-                <button type='submit' class='btn btn-sm btn-danger'>
-                    <i class='fa-solid fa-trash-can'></i>
-                </button>
-            </form>
-        </div>
-    </div>`;
+                        <button type='submit' class='btn btn-sm btn-danger'>
+                            <i class='fa-solid fa-trash-can'></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        `;
+
 
 					layer.on({
 						click: function (e) {
@@ -337,35 +340,40 @@ var popupContent = `
 
 /* GeoJSON Polygon */
 var polygon = L.geoJson(null, {
-				onEachFeature: function (feature, layer) {
-                    var routedelete = "{{ route('polygons.destroy', ':id')}}";
-                    routedelete = routedelete.replace(':id', feature.properties.id);
+    onEachFeature: function (feature, layer) {
+        var routedelete = "{{ route('polygons.destroy', ':id')}}";
+        routedelete = routedelete.replace(':id', feature.properties.id);
 
-                    var routeedit = "{{ route('polygons.edit', ':id')}}";
-                    routeedit = routeedit.replace(':id', feature.properties.id);
+        var routeedit = "{{ route('polygons.edit', ':id')}}";
+        routeedit = routeedit.replace(':id', feature.properties.id);
 
-                var popupContent = `
-                    Nama: ${feature.properties.name} <br>
-                    Deskripsi: ${feature.properties.description} <br>
-                    Dibuat: ${feature.properties.created_at} <br>
-                    Dibuat Oleh: ${feature.properties.user_created} <br>
-                    <img src='{{ asset('storage/images/') }}/${feature.properties.image}' width='250' alt=''><br>
-                    <div class='row mt-4'>
-                    <div class='col-6 text-end'>
-                        <a href='${routeedit}' class='btn btn-warning btn-sm'>
-                            <i class='fa-solid fa-pen-to-square'></i>
-                        </a>
-                    </div>
-                    <div class='col-6'>
-                        <form method='POST' action='${routedelete}' onsubmit="return confirm('Yakin ingin menghapus fitur ini?')">
+        var popupContent = `
+            <b>Nama:</b> ${feature.properties.name} <br>
+            <b>Deskripsi:</b> ${feature.properties.description} <br>
+            <b>Dibuat:</b> ${feature.properties.created_at} <br>
+            <b>Dibuat Oleh: ${feature.properties.user_created} <br>
+            <b>Luas:</b><br>
+            - ${parseFloat(feature.properties.luas_m2).toFixed(2)} m²<br>
+            - ${parseFloat(feature.properties.luas_hektar).toFixed(4)} ha<br>
+            - ${parseFloat(feature.properties.luas_km2).toFixed(6)} km²<br>
+            ${feature.properties.image ? `<img src='{{ asset('storage/images/') }}/${feature.properties.image}' width='250' alt='Gambar Polygon'><br>` : ''}
+            <div class='row mt-4'>
+                <div class='col-6 text-end'>
+                    <a href='${routeedit}' class='btn btn-warning btn-sm'>
+                        <i class='fa-solid fa-pen-to-square'></i>
+                    </a>
+                </div>
+                <div class='col-6'>
+                    <form method='POST' action='${routedelete}' onsubmit="return confirm('Yakin ingin menghapus fitur ini?')">
                         @csrf
                         @method("DELETE")
-                <button type='submit' class='btn btn-sm btn-danger'>
-                    <i class='fa-solid fa-trash-can'></i>
-                </button>
-            </form>
-        </div>
-    </div>`;
+                        <button type='submit' class='btn btn-sm btn-danger'>
+                            <i class='fa-solid fa-trash-can'></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        `;
 
 					layer.on({
 						click: function (e) {
