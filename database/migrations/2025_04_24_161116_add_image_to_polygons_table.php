@@ -9,20 +9,24 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+public function up(): void
     {
         Schema::table('polygons', function (Blueprint $table) {
-            $table->string('image')->nullable();
+            if (!Schema::hasColumn('polygons', 'image')) {
+                $table->string('image')->nullable();
+            }
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+public function down(): void
     {
         Schema::table('polygons', function (Blueprint $table) {
-            $table->dropColumn('image');
+            if (Schema::hasColumn('polygons', 'image')) {
+                $table->dropColumn('image');
+            }
         });
     }
 };

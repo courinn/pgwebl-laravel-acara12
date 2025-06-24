@@ -32,11 +32,15 @@
 
                 {{--jika user login--}}
                 <li class="nav-item">
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button class="nav-link text-danger" type="submit"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                <a href="#" class="nav-link text-danger d-flex align-items-center"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <i class="fa-solid fa-right-from-bracket me-1"></i> Logout
+                </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
                     </form>
                 </li>
+
                 @endauth
 
                 {{--jika user belum login--}}

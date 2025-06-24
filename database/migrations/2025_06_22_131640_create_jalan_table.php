@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('points', function (Blueprint $table) {
+        Schema::create('jalan', function (Blueprint $table) {
             $table->id();
-            $table->geometry('geom');
-            $table->string('name');
-            $table->string('icon')->nullable();
-            $table->text('description');
-            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('points');
+        Schema::dropIfExists('jalan');
     }
 };

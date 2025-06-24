@@ -42,6 +42,7 @@ class PointsController extends Controller
         // Validation request
         $request->validate([
             'name' => 'required|unique:points,name',
+            'birth_date' => 'required',
             'description' => 'required',
             'geom_point' => 'required',
             'image' => 'nullable|mimes:jpeg, png, jpg, gif, svg|max:1024',
@@ -70,6 +71,7 @@ class PointsController extends Controller
         $data = [
             'geom' => $request->geom_point,
             'name' => $request->name,
+            'birth_date' => $request->birth_date,
             'description' => $request->description,
             'image' => $name_image,
             'user_id' => auth()->user()->id,
@@ -113,6 +115,7 @@ class PointsController extends Controller
         // Validation request
         $request->validate([
             'name' => 'required|unique:points,name,' . $id,
+            'birth_date' => 'required',
             'description' => 'required',
             'geom_point' => 'required',
             'image' => 'nullable|mimes:jpeg, png, jpg, gif, svg|max:1024',
@@ -152,6 +155,7 @@ class PointsController extends Controller
         $data = [
             'geom' => $request->geom_point,
             'name' => $request->name,
+            'birth_date' => $request->birth_date,
             'description' => $request->description,
             'image' => $name_image,
         ];
